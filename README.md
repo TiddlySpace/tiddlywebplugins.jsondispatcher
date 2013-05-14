@@ -32,7 +32,7 @@ More to follow.
 
 # Credits
 
-@cdent is the original author of twikified.  I've just packaged it up a bit.
+@cdent is the original author of jsondispatcher.py.  I've just packaged it up a bit.
 
 # See Also
 
