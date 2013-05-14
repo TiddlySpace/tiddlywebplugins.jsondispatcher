@@ -1,3 +1,14 @@
+"""
+Beanstalkd listener that transforms tiddlers from received jobs into a JSON
+string and then sends the transformed data back to beanstalkd via different
+tube.
+
+It only sends on tiddlers that exist and can be read by an anonymous user.
+
+In the case of the TiddlySpace web sockets application, that will be
+listening on the other end of that tube and passing it on to any browser
+clients subscribed to it.
+"""
 
 import beanstalkc
 import logging
