@@ -5,7 +5,7 @@ MAINTAINER = 'Ben Paddock'
 MAINTAINER_EMAIL = 'pads@thisispads.me.uk'
 NAME = 'tiddlywebplugins.jsondispatcher'
 DESCRIPTION = 'A TiddlyWeb plugin to allow the dispatching of tiddlers to non-Python handlers by serialising tiddler data to JSON'
-VERSION = '0.1.0'
+VERSION = '0.1.1'
 
 import os
 from setuptools import setup, find_packages
