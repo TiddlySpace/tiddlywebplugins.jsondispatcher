@@ -13,6 +13,7 @@ from tiddlyweb.web.util import encode_name
 from tiddlyweb.serializer import Serializer
 
 OUTGOING_TUBE = 'socketuri'
+LOGGER = logging.getLogger('tiddlywebplugins.jsondispatcher')
 
 from tiddlywebplugins.dispatcher import (make_beanstalkc,
         DEFAULT_BEANSTALK_HOST, DEFAULT_BEANSTALK_PORT)
@@ -24,6 +25,7 @@ class Listener(BaseListener):
     STORE = None
 
     def run(self):
+        LOGGER.info('listener starting up')
         config = self._kwargs['config']
         self.serializer = Serializer('json', {'tiddlyweb.config': config})
         beanstalk_host = config.get('beanstalk.host', DEFAULT_BEANSTALK_HOST)
@@ -40,6 +42,7 @@ class Listener(BaseListener):
         try:
             self.STORE.get(tiddler)
         except StoreError, exc:
+            LOGGER.warn('tiddler not found: %s', tiddler.title)
             return None  # Tiddler's not there
 
         # this tiddler in a readable bag?
@@ -48,11 +51,12 @@ class Listener(BaseListener):
             usersign = {'name': 'GUEST', 'roles': []}
             bag.policy.allows(usersign, 'read')
         except (StoreError, PermissionsError):
+            LOGGER.warn('GUEST cannot read this tiddler: %s', tiddler.title)
             return None  # GUEST can't read, so sorry.
 
         uri = self._make_uri(tiddler)
 
-        logging.debug('twsock listener sending %s', uri)
+        LOGGER.info('dispatcher sending %s', uri)
         tiddler.text = ''
         tiddler.fields['_uri'] = uri
         self.serializer.object = tiddler
@@ -60,7 +64,7 @@ class Listener(BaseListener):
             self.beanstalkc.use(OUTGOING_TUBE)
             self.beanstalkc.put(self.serializer.to_string())
         except beanstalkc.SocketError, exc:
-            logging.error('dispatch to twsock failed, retry: %s', exc)
+            LOGGER.error('dispatch to twsock failed, retry: %s', exc)
             beanstalk_host = self.config.get('beanstalk.host',
                     DEFAULT_BEANSTALK_HOST)
             beanstalk_port = self.config.get('beanstalk.port',
