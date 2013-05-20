@@ -23,6 +23,11 @@ setup(
         url = 'http://pypi.python.org/pypi/%s' % NAME,
         packages = find_packages(exclude=['test']),
         platforms = 'Posix; MacOS X; Windows',
-        install_requires = ['tiddlyweb', 'tiddlywebplugins.dispatcher', 'beanstalkc'],
+        install_requires = [
+            'tiddlyweb',
+            'tiddlywebplugins.dispatcher',
+            'tiddlywebplugins.utils',
+            'beanstalkc'
+        ],
         zip_safe = False,
 )
