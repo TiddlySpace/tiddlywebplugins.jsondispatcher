@@ -62,7 +62,7 @@ class Listener(BaseListener):
             usersign = {'name': 'GUEST', 'roles': []}
             bag.policy.allows(usersign, 'read')
         except (StoreError, PermissionsError):
-            LOGGER.warn('GUEST cannot read this tiddler: %s', tiddler.title)
+            LOGGER.debug('GUEST cannot read this tiddler: %s', tiddler.title)
             return None  # GUEST can't read, so sorry.
 
         uri = self._make_uri(tiddler)
