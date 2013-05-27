@@ -53,7 +53,7 @@ class Listener(BaseListener):
         try:
             self.STORE.get(tiddler)
         except StoreError, exc:
-            LOGGER.warn('tiddler not found: %s', tiddler.title)
+            LOGGER.debug('tiddler not found: %s', tiddler.title)
             return None  # Tiddler's not there
 
         # this tiddler in a readable bag?
