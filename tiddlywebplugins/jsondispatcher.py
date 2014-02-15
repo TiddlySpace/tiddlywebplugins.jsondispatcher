@@ -51,7 +51,7 @@ class Listener(BaseListener):
 
         tiddler = Tiddler(info['tiddler'], info['bag'])
         try:
-            self.STORE.get(tiddler)
+            tiddler = self.STORE.get(tiddler)
         except StoreError, exc:
             LOGGER.debug('tiddler not found: %s', tiddler.title)
             return None  # Tiddler's not there
